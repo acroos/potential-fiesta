@@ -45,7 +45,7 @@ letterCircle circleData =
         circle 
             [ cx <| toPercentString <| codeToXPercent <| rawX
             , cy <| toPercentString <| codeToYPercent <| rawY
-            , r <| toString <| rawR
+            , r <| toString <| codeToRadius <| rawR
             , fill (circleDataToFillColor rawX rawY rawR)
             ] []
 
