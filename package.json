@@ -6,6 +6,9 @@
   "repository": "git@github.com:acroos/potential-fiesta.git",
   "author": "acroos <roos.austin@gmail.com>",
   "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
