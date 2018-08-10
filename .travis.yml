@@ -23,4 +23,4 @@ deploy:
   zip_file: potential-fiesta-production-$(git rev-parse HEAD).zip
   bucket_name: elasticbeanstalk-eu-west-1-836966196605
   on:
-    branch: production
+    branch: master
