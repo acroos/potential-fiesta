@@ -2,11 +2,11 @@
 
 echo "Setting up environment variables"
 if [[ $TRAVIS_BRANCH == 'staging' ]]; then
-    AWS_ENV=potential-fiesta-staging
-    ZIP_FILE=potential-fiesta-staging-$(git rev-parse HEAD).zip
+    export AWS_ENV=potential-fiesta-staging
+    export ZIP_FILE=potential-fiesta-staging-$(git rev-parse HEAD).zip
 elif [[ $TRAVIS_BRANCH == 'master' ]]; then
-    AWS_ENV=potential-fiesta-production
-    ZIP_FILE=potential-fiesta-production-$(git rev-parse HEAD).zip
+    export AWS_ENV=potential-fiesta-production
+    export ZIP_FILE=potential-fiesta-production-$(git rev-parse HEAD).zip
 else
     exit 0
 fi
