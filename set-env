@@ -1,0 +1,9 @@
+if [[ $TRAVIS_BRANCH == 'staging' ]]; then
+    AWS_ENV=staging
+    ZIP_FILE=potential-fiesta-staging-$(git rev-parse HEAD).zip
+elif [[ $TRAVIS_BRANCH == 'master' ]]; then
+    AWS_ENV=production
+    ZIP_FILE=potential-fiesta-production-$(git rev-parse HEAD).zip
+else
+    exit 0
+fi
