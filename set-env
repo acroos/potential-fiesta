@@ -1,3 +1,6 @@
+#!/bin/bash
+
+echo "Setting up environment variables"
 if [[ $TRAVIS_BRANCH == 'staging' ]]; then
     AWS_ENV=potential-fiesta-staging
     ZIP_FILE=potential-fiesta-staging-$(git rev-parse HEAD).zip
@@ -7,3 +10,6 @@ elif [[ $TRAVIS_BRANCH == 'master' ]]; then
 else
     exit 0
 fi
+
+echo "ENV=${AWS_ENV}"
+echo "ZIP_FILE=${ZIP_FILE}"
