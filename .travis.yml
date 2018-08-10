@@ -24,4 +24,4 @@ deploy:
   bucket_name: elasticbeanstalk-eu-west-1-836966196605
   on:
     all_branches: true
-    condition: $TRAVIS_BRANCH =~ ^staging|production$
+    condition: $TRAVIS_BRANCH =~ (staging|production)
