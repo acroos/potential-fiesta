@@ -11,6 +11,8 @@ script:
   - $TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus -n 2 yarn build
 before_deploy:
   - ./set-env
+  - echo "ZIP_FILE = ${ZIP_FILE}"
+  - echo "AWS_ENV = ${AWS_ENV}"
   - zip -r $ZIP_FILE dist server.js package.json
 deploy:
   skip_cleanup: true
