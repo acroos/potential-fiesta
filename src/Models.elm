@@ -1,11 +1,15 @@
 module Models exposing (..)
 
 type alias Model = 
-    { keystrokes : List Int }
+    { keystrokes : List Int
+    , route : Route }
 
-initialModel : Model
-initialModel = 
-  { keystrokes = [] }
+initialModel : Route -> Model
+initialModel route = 
+    { keystrokes = []
+    , route = route
+    }
 
 type Route
     = FiestaRoute
+    | AboutRoute
