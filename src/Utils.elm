@@ -12,16 +12,15 @@ partitionHelper list size result =
     if (List.length list < 3) then
         result
     else
-        partitionHelper (List.drop size list) size (result ++ [List.take size list])
+        let
+            newList = List.drop size list
+            newResult = result ++ [List.take size list]
+        in
+            partitionHelper newList size newResult
 
 getOrDefault : List a -> Int -> a -> a
 getOrDefault list index default =
-    let
-        maybeVal = (List.head (List.drop index list))
-    in
-        case maybeVal of
-            Just a ->
-                a
-
-            Nothing ->
-                default
+    list
+    |> List.drop index
+    |> List.head
+    |> Maybe.withDefault default
