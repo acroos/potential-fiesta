@@ -12,7 +12,7 @@ import Utils exposing (partition, getOrDefault)
 graphView : List Int -> Html Msg
 graphView letters =
     Html.div []
-        [ graph letters False
+        [ graph letters
         , downloadLink
         ]
 
@@ -24,55 +24,48 @@ downloadLink =
                 ]
         [ Html.text "Download" ]
 
-graph : List Int -> Bool -> Svg Msg
-graph letters animated =
-    let
-        circleData = circleDataPoints letters
-    in
-        svg [ Html.Attributes.id "canvas" ]
-            (List.map (\x -> letterCircle x animated) circleData)
+graph : List Int -> Svg Msg
+graph letters =
+    svg [ Html.Attributes.id "canvas" ]
+        (List.indexedMap (\index code -> letterCircle code index) letters)
 
 circleDataPoints : List Int -> List(List Int)
 circleDataPoints letters =
     partition letters 3
 
-letterCircle : List Int -> Bool -> Svg Msg
-letterCircle circleData animated =
-    let
-        rawX = getOrDefault circleData 0 50
-        rawY = getOrDefault circleData 1 50
-        rawR = getOrDefault circleData 2 50
-    in
-        circle 
-            [ cx <| toPercentString <| codeToXPercent <| rawX
-            , cy <| toPercentString <| codeToYPercent <| rawY
-            , r <| toString <| codeToRadius <| rawR
-            , fill (circleDataToFillColor rawX rawY rawR)
-            , Svg.Attributes.class <| circleClass <| animated
-            ] []
-
-circleClass : Bool -> String
-circleClass animated =
-    if animated then
-        "animated"
-    else
-        ""
+letterCircle : Int -> Int -> Svg Msg
+letterCircle code index =
+    circle 
+        [ cx <| toPercentString <| (codeAndIndexToXPercent code index)
+        , cy <| toPercentString <| (codeAndIndexToYPercent code index)
+        , r <| toString <| (codeAndIndexToRadius code index)
+        , fill (codeAndIndexToFillRgba index code)
+        ] []
 
 toPercentString : Float -> String
 toPercentString value =
     (toString value) ++ "%"
 
-codeToXPercent : Int -> Float
-codeToXPercent code =
-    randomPercentFromCode (code * code)
+codeAndIndexToXPercent : Int -> Int -> Float
+codeAndIndexToXPercent code index =
+    let
+        combined = combineIndexAndCode code index 2
+    in
+        randomPercentFromCode (combined ^ 2)
 
-codeToYPercent : Int -> Float
-codeToYPercent code =
-    randomPercentFromCode (code * code * code)
+codeAndIndexToYPercent : Int -> Int -> Float
+codeAndIndexToYPercent code index =
+    let
+        combined = combineIndexAndCode code index 4
+    in
+        randomPercentFromCode (combined ^ 3)
 
-codeToRadius : Int -> Float
-codeToRadius code =
-    randomFloatFromCode (code // 2) 0.0 500.0
+codeAndIndexToRadius : Int -> Int -> Float
+codeAndIndexToRadius code index =
+    let
+        combined = combineIndexAndCode code index 8
+    in
+        randomFloatFromCode combined 0.0 400.0
 
 randomPercentFromCode : Int -> Float
 randomPercentFromCode code =
@@ -89,13 +82,29 @@ codeToColor : Int -> Int
 codeToColor code =
     floor <| (randomFloatFromCode code 0.0 255.0)
 
-codeToOpacity : Int -> Float
-codeToOpacity code =
-    (randomFloatFromCode code 0.1 0.9)
+combineIndexAndCode : Int -> Int -> Int -> Int
+combineIndexAndCode code index offset =
+    code ^ ((index + offset) % code)
 
-circleDataToFillColor : Int -> Int -> Int -> String
-circleDataToFillColor circleX circleY circleR =
-    "rgba(" ++ (toString (codeToColor circleX)) ++ 
-    ", " ++ (toString (codeToColor circleY)) ++ 
-    ", " ++ (toString (codeToColor circleR)) ++
-    ", " ++ (toString (codeToOpacity (circleX + circleY + circleR))) ++ ")"
+codeAndIndexToRed : Int -> Int -> Int
+codeAndIndexToRed code index =
+    codeToColor (combineIndexAndCode code index 1)
+
+codeAndIndexToGreen : Int -> Int -> Int
+codeAndIndexToGreen code index =
+    codeToColor (combineIndexAndCode code index 3)
+
+codeAndIndexToBlue : Int -> Int -> Int
+codeAndIndexToBlue code index =
+    codeToColor (combineIndexAndCode code index 5)
+
+codeAndIndexToOpacity : Int -> Int -> Float
+codeAndIndexToOpacity code index =
+    (randomFloatFromCode (combineIndexAndCode code index 7) 0.2 0.8)
+
+codeAndIndexToFillRgba : Int -> Int -> String
+codeAndIndexToFillRgba index code =
+    "rgba(" ++ (toString (codeAndIndexToRed code index)) ++ 
+    ", " ++ (toString (codeAndIndexToGreen code index)) ++ 
+    ", " ++ (toString (codeAndIndexToBlue code index)) ++
+    ", " ++ (toString (codeAndIndexToOpacity code index)) ++ ")"
