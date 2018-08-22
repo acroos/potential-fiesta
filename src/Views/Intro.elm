@@ -22,6 +22,6 @@ header =
 whyLink : Html Msg
 whyLink =
     p [ class "text-center" ]
-        [ a [ class "why-link", href aboutPath ]
+        [ a [ class "dark-link", href aboutPath ]
             [ text "why?" ]
         ]
