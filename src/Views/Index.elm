@@ -8,7 +8,7 @@ import Views.Intro exposing (introView)
 
 indexView : Model -> Html Msg
 indexView model =
-    if (List.length model.keystrokes) < 3 then
+    if (List.length model.keystrokes) == 0 then
         introView
     else
         graphView model.keystrokes
