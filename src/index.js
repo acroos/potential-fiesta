@@ -2,7 +2,8 @@ import './main.css';
 import { Main } from './Main.elm';
 import registerServiceWorker from './registerServiceWorker';
 
-const app = Main.embed(document.getElementById('root'));
+const root = document.getElementById('root');
+const app = Main.embed(root);
 
 app.ports.downloadFile.subscribe((id) => {
     const svg = document.getElementById(id);
@@ -11,7 +12,7 @@ app.ports.downloadFile.subscribe((id) => {
     startDownload(url);
 });
 
-document.body.onkeypress = (e) => {
+document.body.onkeydown = (e) => {
     // Only register keypress when we're on the main page
     if (window.location.hash == "") {
         app.ports.bodyKeyPress.send(e.keyCode);
@@ -30,3 +31,13 @@ const startDownload = (url) => {
     a.click();
     document.body.removeChild(a);
 }
+
+root.onclick = (e) => {
+    if (window.location.hash != "") {
+        return;
+    }
+    let hiddenInput = document.getElementById('hidden-input');
+    if (hiddenInput) {
+        hiddenInput.focus();
+    }
+};
