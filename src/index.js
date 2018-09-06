@@ -12,12 +12,16 @@ app.ports.downloadFile.subscribe((id) => {
     startDownload(url);
 });
 
-document.body.onkeydown = (e) => {
-    // Only register keypress when we're on the main page
-    if (window.location.hash == "") {
-        app.ports.bodyKeyPress.send(e.keyCode);
-    }
+const logKeys = (keyEvent) => {
+    app.ports.bodyKeyPress.send(keyEvent.keyCode);
 };
+
+// Android broswers do not seem to respond to onkeypress, so I guess use onkeydown
+if (navigator.appVersion.includes("Android")) {
+    document.body.onkeydown = logKeys;
+} else {
+    document.body.onkeypress = logKeys;
+}
 
 registerServiceWorker();
 

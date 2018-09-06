@@ -80,7 +80,7 @@ codeToColor code =
 
 combineIndexAndCode : Int -> Int -> Int -> Int
 combineIndexAndCode code index offset =
-    code * (((index + offset) % code) + 1)
+    code ^ ((index + offset) % code)
 
 codeAndIndexToRed : Int -> Int -> Int
 codeAndIndexToRed code index =
