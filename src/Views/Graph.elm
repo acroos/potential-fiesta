@@ -29,16 +29,12 @@ graph letters =
     svg [ Html.Attributes.id "canvas" ]
         (List.indexedMap (\index code -> letterCircle code index) letters)
 
-circleDataPoints : List Int -> List(List Int)
-circleDataPoints letters =
-    partition letters 3
-
 letterCircle : Int -> Int -> Svg Msg
 letterCircle code index =
     circle 
         [ cx <| toPercentString <| (codeAndIndexToXPercent code index)
         , cy <| toPercentString <| (codeAndIndexToYPercent code index)
-        , r <| toString <| (codeAndIndexToRadius code index)
+        , r <| toPercentString <| (codeAndIndexToRadius code index)
         , fill (codeAndIndexToFillRgba index code)
         ] []
 
@@ -51,21 +47,21 @@ codeAndIndexToXPercent code index =
     let
         combined = combineIndexAndCode code index 2
     in
-        randomPercentFromCode (combined ^ 2)
+        randomPercentFromCode combined
 
 codeAndIndexToYPercent : Int -> Int -> Float
 codeAndIndexToYPercent code index =
     let
         combined = combineIndexAndCode code index 4
     in
-        randomPercentFromCode (combined ^ 3)
+        randomPercentFromCode combined
 
 codeAndIndexToRadius : Int -> Int -> Float
 codeAndIndexToRadius code index =
     let
         combined = combineIndexAndCode code index 8
     in
-        randomFloatFromCode combined 0.0 400.0
+        randomFloatFromCode combined 1.0 25.0
 
 randomPercentFromCode : Int -> Float
 randomPercentFromCode code =
@@ -84,7 +80,7 @@ codeToColor code =
 
 combineIndexAndCode : Int -> Int -> Int -> Int
 combineIndexAndCode code index offset =
-    code ^ ((index + offset) % code)
+    code * (((index + offset) % code) + 1)
 
 codeAndIndexToRed : Int -> Int -> Int
 codeAndIndexToRed code index =
