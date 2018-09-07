@@ -17,7 +17,7 @@ jumbotron children =
 header : Html msg
 header =
     h1 [ class "text-center display-1" ]
-        [ text "Type something" ]
+        [ text "type something" ]
 
 whyLink : Html Msg
 whyLink =

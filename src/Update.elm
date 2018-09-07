@@ -1,6 +1,6 @@
 module Update exposing (update)
 
-import Commands exposing (downloadSvg)
+import Commands exposing (downloadImage)
 import Msgs exposing (Msg)
 import Models exposing (Model, Route(..))
 import Navigation exposing (back)
@@ -14,9 +14,9 @@ update msg model =
                 newkeystrokes = model.keystrokes ++ [keycode]
             in
                 ( { model | keystrokes = newkeystrokes }, Cmd.none )
-        
-        Msgs.DownloadSvg id ->
-            ( model, (downloadSvg id))
+
+        Msgs.DownloadImage ->
+            ( model, (downloadImage model.downloadConfig))
 
         Msgs.OnLocationChange location ->
             let
@@ -26,3 +26,25 @@ update msg model =
         
         Msgs.GoBack ->
             ( model, Navigation.back 1 )
+
+
+        Msgs.UpdateDownloadConfigWidth width ->
+            let
+                oldConfig = model.downloadConfig
+                newConfig = { oldConfig | width = width }
+            in
+                ( { model | downloadConfig = newConfig }, Cmd.none )
+
+        Msgs.UpdateDownloadConfigHeight height ->
+            let
+                oldConfig = model.downloadConfig
+                newConfig = { oldConfig | height = height }
+            in
+                ( { model | downloadConfig = newConfig }, Cmd.none )
+
+        Msgs.UpdateDownloadConfigFileType fileType ->
+            let
+                oldConfig = model.downloadConfig
+                newConfig = { oldConfig | fileType = fileType }
+            in
+                ( { model | downloadConfig = newConfig }, Cmd.none )

@@ -4,6 +4,9 @@ import Navigation exposing (Location)
 
 type Msg
     = OnBodyKeyPress Int
-    | DownloadSvg String
+    | DownloadImage
     | OnLocationChange Location
     | GoBack
+    | UpdateDownloadConfigWidth Float
+    | UpdateDownloadConfigHeight Float
+    | UpdateDownloadConfigFileType String

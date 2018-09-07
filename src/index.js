@@ -5,13 +5,6 @@ import registerServiceWorker from './registerServiceWorker';
 const root = document.getElementById('root');
 const app = Main.embed(root);
 
-app.ports.downloadFile.subscribe((id) => {
-    const svg = document.getElementById(id);
-    const source = (new XMLSerializer()).serializeToString(svg);
-    const url = window.URL.createObjectURL(new Blob([source], { "type" : "text\/xml" }));
-    startDownload(url);
-});
-
 const logKeys = (keyEvent) => {
     app.ports.bodyKeyPress.send(keyEvent.keyCode);
 };
@@ -23,18 +16,50 @@ if (navigator.appVersion.includes("Android")) {
     document.body.onkeypress = logKeys;
 }
 
-registerServiceWorker();
+app.ports.downloadFile.subscribe((config) => {
+    const svg = document.querySelector("svg");
+    var svgData = new XMLSerializer().serializeToString(svg);
 
-const startDownload = (url) => {
+    if (config.fileType == "png") {
+        downloadAsPng(svgData, config);
+    } else {
+        downloadAsSvg(svgData);
+    }
+});
+
+const downloadAsPng = (svgData, config) => {
+    var canvas = document.createElement("canvas");
+    canvas.height = config.height;
+    canvas.width = config.width;
+    var ctx = canvas.getContext("2d");
+    
+    var img = document.createElement("img");
+    img.setAttribute( "src", "data:image/svg+xml;base64," + btoa( svgData ) );
+
+    img.onload = () => {
+        ctx.drawImage( img, 0, 0 );
+        var url = canvas.toDataURL("image/png", 1)
+
+        downloadFromUrl(url, "png");
+    };
+}
+
+const downloadAsSvg = (svgData) => {
+    const url = window.URL.createObjectURL(new Blob([svgData], { "type" : "text\/xml" }));
+    downloadFromUrl(url, "svg");
+}
+
+const downloadFromUrl = (url, fileExtension) => {
     const a = document.createElement("a");
-    a.setAttribute("download", "potential-fiesta.svg");
+    a.setAttribute("download", "potential-fiesta." + fileExtension);
     a.setAttribute("href", url);
     a.style["display"] = "none";
 
-    document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
 }
+
+
+registerServiceWorker();
 
 root.onclick = (e) => {
     if (window.location.hash != "") {

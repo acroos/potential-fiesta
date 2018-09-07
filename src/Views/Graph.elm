@@ -2,25 +2,28 @@ module Views.Graph exposing (graphView)
 
 import Html exposing (Html, div, button)
 import Html.Attributes exposing (id, class)
-import Html.Events exposing (onClick)
+import Models exposing (DownloadConfig)
 import Msgs exposing (Msg)
 import Random
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-import Utils exposing (partition, getOrDefault)
+import Views.DownloadPrompt exposing (downloadPrompt)
 
-graphView : List Int -> Html Msg
-graphView letters =
+
+graphView : List Int -> DownloadConfig -> Html Msg
+graphView letters downloadConfig =
     Html.div []
         [ graph letters
         , downloadLink
+        , downloadPrompt downloadConfig
         ]
 
 downloadLink : Html Msg
 downloadLink = 
-    Html.button [ Html.Attributes.id "download-svg"
+    Html.button [ Html.Attributes.type_ "button"
                 , Html.Attributes.class "btn btn-outline-secondary btn-sm download-btn"
-                , onClick (Msgs.DownloadSvg "canvas")
+                , Html.Attributes.attribute "data-toggle" "modal"
+                , Html.Attributes.attribute "data-target" "#downloadModal"
                 ]
         [ Html.text "Download" ]
 

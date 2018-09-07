@@ -1,5 +1,6 @@
 port module Ports exposing (..)
 
-port bodyKeyPress : (Int -> msg) -> Sub msg
+import Json.Encode exposing (Value)
 
-port downloadFile : String -> Cmd msg
+port bodyKeyPress : (Int -> msg) -> Sub msg
+port downloadFile : Value -> Cmd msg

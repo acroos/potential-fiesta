@@ -11,4 +11,4 @@ indexView model =
     if (List.length model.keystrokes) == 0 then
         introView
     else
-        graphView model.keystrokes
+        graphView model.keystrokes model.downloadConfig
