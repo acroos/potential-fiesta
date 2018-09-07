@@ -11,7 +11,7 @@ initialModel route =
     { keystrokes = []
     , route = route
     , downloadConfig = 
-        { width = 1600
+        { width = 1920
         , height = 1200
         , fileType = "svg"
         }

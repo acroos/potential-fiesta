@@ -60,8 +60,8 @@ widthRange width enabled =
                 [ type_ "range"
                 , class "form-control-range"
                 , id "rangeW"
-                , attribute "min" "160"
-                , attribute "max" "4800"
+                , attribute "min" "192"
+                , attribute "max" "5760"
                 , attribute "step" "1"
                 , onInput inputChange
                 , onChange inputChange
