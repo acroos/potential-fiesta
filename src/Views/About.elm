@@ -2,6 +2,7 @@ module Views.About exposing (aboutView)
 
 import Html exposing (..)
 import Html.Attributes exposing (class, href)
+import Html.Events exposing (onClick)
 import Msgs exposing (Msg)
 
 aboutView : Html Msg
@@ -20,7 +21,7 @@ aboutParagraph =
 goBack : Html Msg
 goBack =
     p [ class "text-center" ] 
-    [ a [ href "/", class "dark-link" ] [ text "go back" ] ]
+    [ a [ onClick Msgs.GoBack, href "", class "dark-link" ] [ text "go back" ] ]
 
 aboutText : List (Html Msg)
 aboutText =

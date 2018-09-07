@@ -3,6 +3,7 @@ module Update exposing (update)
 import Commands exposing (downloadSvg)
 import Msgs exposing (Msg)
 import Models exposing (Model, Route(..))
+import Navigation exposing (back)
 import Routing exposing (parseLocation)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -22,3 +23,6 @@ update msg model =
                 newRoute = parseLocation location
             in
                 ( { model | route = newRoute }, Cmd.none )
+        
+        Msgs.GoBack ->
+            ( model, Navigation.back 1 )

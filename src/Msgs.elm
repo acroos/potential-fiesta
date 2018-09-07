@@ -6,3 +6,4 @@ type Msg
     = OnBodyKeyPress Int
     | DownloadSvg String
     | OnLocationChange Location
+    | GoBack
